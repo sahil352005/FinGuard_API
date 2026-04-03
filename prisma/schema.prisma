@@ -6,24 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
-}
-
-enum UserRole {
-  VIEWER
-  ANALYST
-  ADMIN
-}
-
-enum TransactionType {
-  INCOME
-  EXPENSE
-}
-
-enum UserStatus {
-  ACTIVE
-  INACTIVE
 }
 
 model User {
@@ -32,8 +16,8 @@ model User {
   password  String
   firstName String
   lastName  String
-  role      UserRole   @default(VIEWER)
-  status    UserStatus @default(ACTIVE)
+  role      String     @default("VIEWER") // VIEWER | ANALYST | ADMIN
+  status    String     @default("ACTIVE") // ACTIVE | INACTIVE
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 
@@ -49,7 +33,7 @@ model Transaction {
   userId    String
   user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   amount    Float
-  type      TransactionType
+  type      String          // INCOME | EXPENSE
   category  String
   date      DateTime
   note      String?
