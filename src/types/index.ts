@@ -1,4 +1,4 @@
-import { UserRole, TransactionType, UserStatus } from "@prisma/client";
+import type { Request } from "express";
 
 // User Types
 export interface CreateUserDTO {
@@ -6,7 +6,7 @@ export interface CreateUserDTO {
   password: string;
   firstName: string;
   lastName: string;
-  role?: UserRole;
+  role?: string;
 }
 
 export interface LoginDTO {
@@ -17,8 +17,8 @@ export interface LoginDTO {
 export interface UpdateUserDTO {
   firstName?: string;
   lastName?: string;
-  role?: UserRole;
-  status?: UserStatus;
+  role?: string;
+  status?: string;
 }
 
 export interface UserResponse {
@@ -26,8 +26,8 @@ export interface UserResponse {
   email: string;
   firstName: string;
   lastName: string;
-  role: UserRole;
-  status: UserStatus;
+  role: string;
+  status: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -41,13 +41,13 @@ export interface AuthTokenResponse {
 export interface JWTPayload {
   userId: string;
   email: string;
-  role: UserRole;
+  role: string;
 }
 
 // Transaction Types
 export interface CreateTransactionDTO {
   amount: number;
-  type: TransactionType;
+  type: string;
   category: string;
   date: Date;
   note?: string;
@@ -55,14 +55,14 @@ export interface CreateTransactionDTO {
 
 export interface UpdateTransactionDTO {
   amount?: number;
-  type?: TransactionType;
+  type?: string;
   category?: string;
   date?: Date;
   note?: string;
 }
 
 export interface TransactionQuery {
-  type?: TransactionType;
+  type?: string;
   category?: string;
   startDate?: Date;
   endDate?: Date;
@@ -74,7 +74,7 @@ export interface TransactionResponse {
   id: string;
   userId: string;
   amount: number;
-  type: TransactionType;
+  type: string;
   category: string;
   date: Date;
   note?: string;
@@ -90,7 +90,7 @@ export interface DashboardSummary {
   categoryWiseTotals: Array<{
     category: string;
     total: number;
-    type: TransactionType;
+    type: string;
   }>;
   recentTransactions: TransactionResponse[];
 }
@@ -124,6 +124,6 @@ export class AppError extends Error {
   }
 }
 
-export interface AuthRequest extends Express.Request {
+export interface AuthRequest extends Request {
   user?: JWTPayload;
 }

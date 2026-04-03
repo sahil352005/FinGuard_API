@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { UserRole, TransactionType, UserStatus } from "@prisma/client";
 
 // Auth Schemas
 export const RegisterSchema = z.object({
@@ -30,20 +29,20 @@ export const CreateUserSchema = z.object({
     .regex(/[!@#$%^&*]/, "Password must contain at least one special character"),
   firstName: z.string().min(1, "First name is required").max(50),
   lastName: z.string().min(1, "Last name is required").max(50),
-  role: z.enum([UserRole.VIEWER, UserRole.ANALYST, UserRole.ADMIN]).optional(),
+  role: z.enum(["VIEWER", "ANALYST", "ADMIN"]).optional(),
 });
 
 export const UpdateUserSchema = z.object({
   firstName: z.string().min(1).max(50).optional(),
   lastName: z.string().min(1).max(50).optional(),
-  role: z.enum([UserRole.VIEWER, UserRole.ANALYST, UserRole.ADMIN]).optional(),
-  status: z.enum([UserStatus.ACTIVE, UserStatus.INACTIVE]).optional(),
+  role: z.enum(["VIEWER", "ANALYST", "ADMIN"]).optional(),
+  status: z.enum(["ACTIVE", "INACTIVE"]).optional(),
 });
 
 // Transaction Schemas
 export const CreateTransactionSchema = z.object({
   amount: z.number().positive("Amount must be greater than 0"),
-  type: z.enum([TransactionType.INCOME, TransactionType.EXPENSE]),
+  type: z.enum(["INCOME", "EXPENSE"]),
   category: z.string().min(1, "Category is required").max(50),
   date: z.coerce.date(),
   note: z.string().max(500).optional(),
@@ -51,7 +50,7 @@ export const CreateTransactionSchema = z.object({
 
 export const UpdateTransactionSchema = z.object({
   amount: z.number().positive("Amount must be greater than 0").optional(),
-  type: z.enum([TransactionType.INCOME, TransactionType.EXPENSE]).optional(),
+  type: z.enum(["INCOME", "EXPENSE"]).optional(),
   category: z.string().min(1).max(50).optional(),
   date: z.coerce.date().optional(),
   note: z.string().max(500).optional(),
@@ -59,7 +58,7 @@ export const UpdateTransactionSchema = z.object({
 
 // Query Schemas
 export const TransactionQuerySchema = z.object({
-  type: z.enum([TransactionType.INCOME, TransactionType.EXPENSE]).optional(),
+  type: z.enum(["INCOME", "EXPENSE"]).optional(),
   category: z.string().optional(),
   startDate: z.coerce.date().optional(),
   endDate: z.coerce.date().optional(),

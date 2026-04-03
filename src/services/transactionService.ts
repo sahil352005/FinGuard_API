@@ -7,7 +7,6 @@ import {
   TransactionResponse,
   DashboardSummary,
 } from "@/types";
-import { TransactionType } from "@prisma/client";
 
 const mapTransactionToResponse = (transaction: any): TransactionResponse => {
   return {
@@ -183,13 +182,6 @@ export const transactionService = {
   async getDashboardSummary(userId: string): Promise<DashboardSummary> {
     const where = { userId, isDeleted: false };
 
-    // Get aggregated data
-    const aggregated = await prisma.transaction.aggregate({
-      where,
-      _sum: { amount: true },
-      _count: true,
-    });
-
     // Get totals by type
     const byType = await prisma.transaction.groupBy({
       by: ["type"],
@@ -201,7 +193,7 @@ export const transactionService = {
     let totalExpense = 0;
 
     byType.forEach((item) => {
-      if (item.type === TransactionType.INCOME) {
+      if (item.type === "INCOME") {
         totalIncome = item._sum.amount || 0;
       } else {
         totalExpense = item._sum.amount || 0;

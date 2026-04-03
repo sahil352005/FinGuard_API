@@ -2,7 +2,6 @@ import express from "express";
 import "express-async-errors";
 import cors from "cors";
 import helmet from "helmet";
-import { config } from "@/config";
 import { errorHandler, notFoundHandler } from "@/middlewares";
 import routes from "@/routes";
 
@@ -28,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // ============================================
 // HEALTH CHECK
 // ============================================
-app.get("/health", (req, res) => {
+app.get("/health", (_req, res) => {
   res.status(200).json({
     success: true,
     message: "Server is running",

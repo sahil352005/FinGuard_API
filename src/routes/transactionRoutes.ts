@@ -6,7 +6,6 @@ import {
   UpdateTransactionSchema,
   TransactionQuerySchema,
 } from "@/utils/validation";
-import { UserRole } from "@prisma/client";
 
 const router = Router();
 
@@ -18,7 +17,7 @@ const router = Router();
 router.post(
   "/",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   validateRequest(CreateTransactionSchema, "body"),
   transactionController.createTransaction
 );
@@ -31,7 +30,8 @@ router.post(
 router.get(
   "/",
   authenticate,
-  authorizeRoles(UserRole.ANALYST, UserRole.ADMIN),
+  authorizeRoles("ANALYST", "ADMIN"),
+  validateRequest(TransactionQuerySchema, "query"),
   transactionController.getTransactions
 );
 
@@ -54,7 +54,7 @@ router.get(
 router.patch(
   "/:id",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   validateRequest(UpdateTransactionSchema, "body"),
   transactionController.updateTransaction
 );
@@ -67,7 +67,7 @@ router.patch(
 router.delete(
   "/:id",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   transactionController.deleteTransaction
 );
 

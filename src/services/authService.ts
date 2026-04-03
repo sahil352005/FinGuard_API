@@ -2,7 +2,6 @@ import { prisma } from "@/utils/prisma";
 import { hashPassword, verifyPassword, generateToken } from "@/utils";
 import { AppError } from "@/types";
 import { CreateUserDTO, LoginDTO, UserResponse } from "@/types";
-import { UserRole } from "@prisma/client";
 
 const mapUserToResponse = (user: any): UserResponse => {
   return {
@@ -38,7 +37,7 @@ export const authService = {
         password: hashedPassword,
         firstName: data.firstName,
         lastName: data.lastName,
-        role: data.role || UserRole.VIEWER,
+        role: data.role || "VIEWER",
       },
     });
 

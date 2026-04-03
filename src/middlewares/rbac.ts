@@ -1,9 +1,8 @@
 import { Response, NextFunction } from "express";
-import { UserRole } from "@prisma/client";
-import { AppError, AuthRequest } from "@/types";
+import { AuthRequest } from "@/types";
 
 export const authorizeRoles =
-  (...allowedRoles: UserRole[]) =>
+  (...allowedRoles: string[]) =>
   (req: AuthRequest, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({

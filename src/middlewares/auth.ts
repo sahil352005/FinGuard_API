@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import { verifyToken, extractTokenFromHeader } from "@/utils/jwt";
 import { AppError, AuthRequest } from "@/types";
 
@@ -8,7 +8,7 @@ export const authenticate = (
   next: NextFunction
 ): void => {
   try {
-    const token = extractTokenFromHeader(req.headers.authorization);
+    const token = extractTokenFromHeader(req.headers.authorization as string);
 
     if (!token) {
       throw new AppError(401, "No authentication token provided");

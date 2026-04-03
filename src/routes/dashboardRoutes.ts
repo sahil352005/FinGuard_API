@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { transactionController } from "@/controllers";
 import { authenticate, authorizeRoles } from "@/middlewares";
-import { UserRole } from "@prisma/client";
 
 const router = Router();
 
@@ -13,7 +12,7 @@ const router = Router();
 router.get(
   "/summary",
   authenticate,
-  authorizeRoles(UserRole.ANALYST, UserRole.ADMIN),
+  authorizeRoles("ANALYST", "ADMIN"),
   transactionController.getDashboardSummary
 );
 

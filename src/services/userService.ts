@@ -2,7 +2,6 @@ import { prisma } from "@/utils/prisma";
 import { hashPassword } from "@/utils";
 import { AppError } from "@/types";
 import { CreateUserDTO, UpdateUserDTO, UserResponse } from "@/types";
-import { UserStatus } from "@prisma/client";
 
 const mapUserToResponse = (user: any): UserResponse => {
   return {
@@ -133,7 +132,7 @@ export const userService = {
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { status: UserStatus.INACTIVE },
+      data: { status: "INACTIVE" },
     });
 
     return mapUserToResponse(updatedUser);
@@ -150,7 +149,7 @@ export const userService = {
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data: { status: UserStatus.ACTIVE },
+      data: { status: "ACTIVE" },
     });
 
     return mapUserToResponse(updatedUser);

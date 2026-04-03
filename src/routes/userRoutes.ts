@@ -2,7 +2,6 @@ import { Router } from "express";
 import { userController } from "@/controllers";
 import { authenticate, authorizeRoles, validateRequest } from "@/middlewares";
 import { CreateUserSchema, UpdateUserSchema } from "@/utils/validation";
-import { UserRole } from "@prisma/client";
 
 const router = Router();
 
@@ -14,7 +13,7 @@ const router = Router();
 router.post(
   "/",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   validateRequest(CreateUserSchema, "body"),
   userController.createUser
 );
@@ -27,7 +26,7 @@ router.post(
 router.get(
   "/",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   userController.getAllUsers
 );
 
@@ -39,7 +38,7 @@ router.get(
 router.get(
   "/:id",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   userController.getUserById
 );
 
@@ -51,7 +50,7 @@ router.get(
 router.patch(
   "/:id",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   validateRequest(UpdateUserSchema, "body"),
   userController.updateUser
 );
@@ -64,7 +63,7 @@ router.patch(
 router.delete(
   "/:id",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   userController.deleteUser
 );
 
@@ -76,7 +75,7 @@ router.delete(
 router.patch(
   "/:id/deactivate",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   userController.deactivateUser
 );
 
@@ -88,7 +87,7 @@ router.patch(
 router.patch(
   "/:id/activate",
   authenticate,
-  authorizeRoles(UserRole.ADMIN),
+  authorizeRoles("ADMIN"),
   userController.activateUser
 );
 

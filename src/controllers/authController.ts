@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { authService } from "@/services";
 import { sendSuccess, sendError } from "@/utils/response";
-import { AuthRequest, CreateUserDTO, LoginDTO } from "@/types";
+import { AuthRequest } from "@/types";
 
 export const authController = {
   async register(
