@@ -1,4 +1,4 @@
-import { PrismaClient, UserRole, TransactionType } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
@@ -18,7 +18,7 @@ async function main() {
       password: adminPassword,
       firstName: "Admin",
       lastName: "User",
-      role: UserRole.ADMIN,
+      role: "ADMIN",
     },
   });
 
@@ -30,19 +30,19 @@ async function main() {
       password: analystPassword,
       firstName: "Analyst",
       lastName: "User",
-      role: UserRole.ANALYST,
+      role: "ANALYST",
     },
   });
 
   // Create viewer user
   const viewerPassword = await bcrypt.hash("Viewer@123456", 10);
-  const viewer = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: "viewer@finguard.com",
       password: viewerPassword,
       firstName: "Viewer",
       lastName: "User",
-      role: UserRole.VIEWER,
+      role: "VIEWER",
     },
   });
 
@@ -54,7 +54,7 @@ async function main() {
       {
         userId: admin.id,
         amount: 50000,
-        type: TransactionType.INCOME,
+        type: "INCOME",
         category: "Salary",
         date: new Date(today.getTime() - 5 * 24 * 60 * 60 * 1000),
         note: "Monthly salary",
@@ -62,7 +62,7 @@ async function main() {
       {
         userId: admin.id,
         amount: 5000,
-        type: TransactionType.EXPENSE,
+        type: "EXPENSE",
         category: "Rent",
         date: new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000),
         note: "Monthly rent payment",
@@ -70,7 +70,7 @@ async function main() {
       {
         userId: admin.id,
         amount: 2000,
-        type: TransactionType.EXPENSE,
+        type: "EXPENSE",
         category: "Groceries",
         date: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
         note: "Weekly groceries",
@@ -78,7 +78,7 @@ async function main() {
       {
         userId: admin.id,
         amount: 10000,
-        type: TransactionType.INCOME,
+        type: "INCOME",
         category: "Freelance",
         date: new Date(today.getTime() - 1 * 24 * 60 * 60 * 1000),
         note: "Freelance project payment",
@@ -86,7 +86,7 @@ async function main() {
       {
         userId: admin.id,
         amount: 500,
-        type: TransactionType.EXPENSE,
+        type: "EXPENSE",
         category: "Utilities",
         date: today,
         note: "Electricity bill",
@@ -100,7 +100,7 @@ async function main() {
       {
         userId: analyst.id,
         amount: 45000,
-        type: TransactionType.INCOME,
+        type: "INCOME",
         category: "Salary",
         date: new Date(today.getTime() - 4 * 24 * 60 * 60 * 1000),
         note: "Monthly salary",
@@ -108,7 +108,7 @@ async function main() {
       {
         userId: analyst.id,
         amount: 4500,
-        type: TransactionType.EXPENSE,
+        type: "EXPENSE",
         category: "Rent",
         date: new Date(today.getTime() - 2 * 24 * 60 * 60 * 1000),
         note: "Monthly rent",
@@ -116,7 +116,7 @@ async function main() {
       {
         userId: analyst.id,
         amount: 1500,
-        type: TransactionType.EXPENSE,
+        type: "EXPENSE",
         category: "Food",
         date: today,
         note: "Restaurant expenses",
