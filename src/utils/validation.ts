@@ -11,6 +11,7 @@ export const RegisterSchema = z.object({
     .regex(/[!@#$%^&*]/, "Password must contain at least one special character"),
   firstName: z.string().min(1, "First name is required").max(50),
   lastName: z.string().min(1, "Last name is required").max(50),
+  role: z.enum(["VIEWER", "ANALYST", "ADMIN"]).optional(),
 });
 
 export const LoginSchema = z.object({
