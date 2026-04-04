@@ -2,6 +2,10 @@
 
 A finance dashboard backend with role-based access control, built with Node.js, Express, TypeScript, Prisma, and SQLite.
 
+**Live API:** https://finguardapi-production.up.railway.app
+
+**API Docs (Swagger):** https://finguardapi-production.up.railway.app/api-docs
+
 ---
 
 ## Tech Stack
@@ -49,20 +53,24 @@ yarn install
 # 2. Copy environment file
 cp .env.example .env
 
-# 3. Generate Prisma client
+# 3. Edit .env and set your JWT_SECRET
+
+# 4. Generate Prisma client
 yarn prisma:generate
 
-# 4. Run database migrations
+# 5. Run database migrations
 yarn prisma:migrate
 
-# 5. (Optional) Seed sample data
+# 6. (Optional) Seed sample data
 yarn prisma:seed
 
-# 6. Start development server
+# 7. Start development server
 yarn dev
 ```
 
 Server runs at: `http://localhost:5000`
+
+Swagger docs at: `http://localhost:5000/api-docs`
 
 ---
 
