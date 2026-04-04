@@ -124,17 +124,25 @@ export const transactionController = {
   async getDashboardSummary(req: AuthRequest, res: Response): Promise<void> {
     try {
       if (!req.user) {
-        res.status(401).json({
-          success: false,
-          error: "Unauthorized",
-        });
+        res.status(401).json({ success: false, error: "Unauthorized" });
         return;
       }
-
-      const summary = await transactionService.getDashboardSummary(
-        req.user.userId
-      );
+      const summary = await transactionService.getDashboardSummary(req.user.userId);
       sendSuccess(res, summary);
+    } catch (error) {
+      sendError(res, error, 500);
+    }
+  },
+
+  async getTrends(req: AuthRequest, res: Response): Promise<void> {
+    try {
+      if (!req.user) {
+        res.status(401).json({ success: false, error: "Unauthorized" });
+        return;
+      }
+      const granularity = req.query.granularity === "weekly" ? "weekly" : "monthly";
+      const trends = await transactionService.getTrends(req.user.userId, granularity);
+      sendSuccess(res, trends);
     } catch (error) {
       sendError(res, error, 500);
     }

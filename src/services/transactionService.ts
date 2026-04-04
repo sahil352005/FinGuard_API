@@ -6,6 +6,7 @@ import {
   TransactionQuery,
   TransactionResponse,
   DashboardSummary,
+  TrendsResponse,
 } from "@/types";
 
 const mapTransactionToResponse = (transaction: any): TransactionResponse => {
@@ -227,5 +228,46 @@ export const transactionService = {
       categoryWiseTotals,
       recentTransactions: recentTransactions.map(mapTransactionToResponse),
     };
+  },
+
+  async getTrends(userId: string, granularity: "monthly" | "weekly"): Promise<TrendsResponse> {
+    const where = { userId, isDeleted: false };
+
+    const transactions = await prisma.transaction.findMany({
+      where,
+      orderBy: { date: "asc" },
+      select: { amount: true, type: true, date: true },
+    });
+
+    const buckets: Record<string, { income: number; expense: number }> = {};
+
+    transactions.forEach(({ amount, type, date }) => {
+      let key: string;
+
+      if (granularity === "weekly") {
+        const d = new Date(date);
+        const startOfYear = new Date(d.getFullYear(), 0, 1);
+        const week = Math.ceil(
+          ((d.getTime() - startOfYear.getTime()) / 86400000 + startOfYear.getDay() + 1) / 7
+        );
+        key = `${d.getFullYear()}-W${String(week).padStart(2, "0")}`;
+      } else {
+        const d = new Date(date);
+        key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+      }
+
+      if (!buckets[key]) buckets[key] = { income: 0, expense: 0 };
+      if (type === "INCOME") buckets[key].income += amount;
+      else buckets[key].expense += amount;
+    });
+
+    const trends = Object.entries(buckets).map(([period, { income, expense }]) => ({
+      period,
+      income,
+      expense,
+      net: income - expense,
+    }));
+
+    return { granularity, trends };
   },
 };

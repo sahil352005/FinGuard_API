@@ -95,6 +95,18 @@ export interface DashboardSummary {
   recentTransactions: TransactionResponse[];
 }
 
+export interface TrendPeriod {
+  period: string;
+  income: number;
+  expense: number;
+  net: number;
+}
+
+export interface TrendsResponse {
+  granularity: "monthly" | "weekly";
+  trends: TrendPeriod[];
+}
+
 // API Response Types
 export interface ApiResponse<T> {
   success: boolean;

@@ -6,7 +6,6 @@ const router = Router();
 
 /**
  * @route GET /dashboard/summary
- * @description Get dashboard summary with aggregated data (Analyst, Admin)
  * @access Private - Analyst, Admin
  */
 router.get(
@@ -14,6 +13,17 @@ router.get(
   authenticate,
   authorizeRoles("ANALYST", "ADMIN"),
   transactionController.getDashboardSummary
+);
+
+/**
+ * @route GET /dashboard/trends?granularity=monthly|weekly
+ * @access Private - Analyst, Admin
+ */
+router.get(
+  "/trends",
+  authenticate,
+  authorizeRoles("ANALYST", "ADMIN"),
+  transactionController.getTrends
 );
 
 export default router;
